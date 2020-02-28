@@ -40,11 +40,17 @@
                 <div class="col-12 bg-white text-center">
                     <div class="bg-dark p-1 my-1 rounded inline" style="margin: auto;">
                         <div class="row justify-content-center" id="mini-gallery-row">
-                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg"
-                                    alt="Header1" style="max-height:250px;" />
+                            <div class="hide-custom3"> <img class="img-fluid" src="img/Header2-880x480.jpg"
+                                    alt="Header2" style="max-height:150px;" />
+                            </div>
+                            <div class="hide-custom2"> <img class="img-fluid" src="img/Header-1680x600.jpg"
+                                    alt="Header1" style="max-height:150px;" />
                             </div>
                             <div class="hide-custom"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2"
-                                    style="max-height:250px;" />
+                                    style="max-height:150px;" />
+                            </div>
+                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg"
+                                    alt="Header1" style="max-height:150px;" />
                             </div>
                         </div>
                     </div>
