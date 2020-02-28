@@ -17,6 +17,13 @@ function fixTable() {
 	});
 };
 
+function getCSVData() {
+	var csv_value = $('#example').table2CSV({
+		delivery: 'value'
+	});
+	$("#csv_text").val(csv_value);
+}
+
 let search = window.location.search;
 fetch(emp_url + search)
 	.then(response => response.text())

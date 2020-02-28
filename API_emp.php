@@ -122,14 +122,23 @@
                         echo('</tr>');
                 }
                 echo ('</tbody>');
-                echo ('<tfoot><tr>');
-                echo('<th>' . "Employee Name" . '</th>');
-                echo('<th>' . "Company Number" . '</th>');
-                echo('<th>' . "Medical Expires" . '</th>');
-                echo('<th>' . "Induction Expires" . '</th>');
-                echo('<th>' . "Last Point Badged" . '</th>');
-                echo('<th>' . "Upcoming Planned Leave" . '</th>');
-                 echo('</tr></tfoot></table>');
+            //     '<tfoot><tr>');
+            //     echo('<th>' . "Employee Name" . '</th>');
+            //     echo('<th>' . "Company Number" . '</th>');
+            //     echo('<th>' . "Medical Expires" . '</th>');
+            //     echo('<th>' . "Induction Expires" . '</th>');
+            //     echo('<th>' . "Last Point Badged" . '</th>');
+            //     echo('<th>' . "Upcoming Planned Leave" . '</th>');
+            //     echo('</tr></tfoot>
+                echo ('</table>');?>
+
+
+<form action="getCSV.php" method="post">
+    <input type="hidden" name="csv_text" id="csv_text">
+    <input type="submit" value="Get CSV File" onclick="getCSVData();">
+</form>
+
+<?php
                 echo "<br>";
             
             //close container

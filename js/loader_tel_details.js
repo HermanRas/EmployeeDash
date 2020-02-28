@@ -1,5 +1,5 @@
 //global vars.
-console.log('Fetching Tel Date');
+console.log('Fetching Tel detail Date');
 
 function fixTable() {
 	var table = $('#example').DataTable({

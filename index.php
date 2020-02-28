@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mining Delays</title>
+    <title>Employee Status</title>
 
     <!-- Chrome/android APP settings -->
     <meta name="theme-color" content="#4287f5">
@@ -18,7 +18,6 @@
     <link href="css/app.css" rel="stylesheet">
     <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- end of bootstrap -->
-
 </head>
 
 <body class="bg-primary">
@@ -28,19 +27,26 @@
         <!-- NAV START -->
         <nav class="navbar navbar-dark bg-dark rounded">
             <a class="navbar-brand" href="index.php">
-                <img src="img/icon.png" width="30" height="30" class="d-inline-block align-top bg-white rounded" alt="">
+                <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded"
+                    alt="">
                 Employee Status Summary
             </a>
         </nav>
         <!-- NAV END -->
 
         <!-- Banner -->
-        <section>
+        <section class="d-none d-md-block">
             <div class="row bg-white">
                 <div class="col-12 bg-white text-center">
-                    <div class="bg-dark p-1 my-1 rounded" style="margin: auto;">
-                        <img src="img/Header-1680x600.jpg" class="img-fluid rounded" style="max-height: 250px;"
-                            alt="Header">
+                    <div class="bg-dark p-1 my-1 rounded inline" style="margin: auto;">
+                        <div class="row justify-content-center" id="mini-gallery-row">
+                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg"
+                                    alt="Header1" style="max-height:250px;" />
+                            </div>
+                            <div class="hide-custom"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2"
+                                    style="max-height:250px;" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,10 +99,9 @@
     <script src="js/dataTables.bootstrap4.min.js"></script>
     <!-- end of Bootstrap JS -->
     <!-- Page Level Scripts -->
+    <script src="js/table2CSV.js"></script>
     <script src="js/browserCheck.js"></script>
     <script src="js/loader_emp.js"></script>
-
-
 </body>
 
 </html>

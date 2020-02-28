@@ -30,7 +30,7 @@
             <a class="navbar-brand" href="index.php">
                 <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded"
                     alt="">
-                Employee Printing Summary
+                Employee Telephone Summary
             </a>
         </nav>
         <!-- NAV END -->
@@ -60,7 +60,7 @@
         <!-- Form Summary -->
         <div class="card my-3">
             <div class="card-header bg-dark text-white">
-                Your Team's Printing Report:
+                Your Team's Telephone Report:
             </div>
             <div class="card-body bg-light">
                 <!-- Filters -->
@@ -84,11 +84,25 @@
             </div>
         </div>
         <a class="btn btn-outline-primary btn-lg form-control" href="<?php
-            $date = date_create()->modify('-60 days');
-            $fDate = date_format($date, 'Y/m');
+                if(isset($_GET['fDate'])){
+                $sdate = $_GET['fDate']; 
+                $sdate= explode("-",$sdate);
+                $time = strtotime($sdate[0].'/'.($sdate[1]-1).'/01 00:00:00');
+                $fDate = date('Y-m',$time);
+                
+                $Nr = '';
+                if(isset($_GET['Nr'])){
+                    $Nr = '&Nr='.$_GET['Nr'];      
+                }
 
-            echo $url.'printing.php?manager='.$user.'&fDate='.$fDate;
-                ?>">
+                } else{
+
+                
+                $date = date_create()->modify('-60 days');
+                $fDate = date_format($date, 'Y-m');
+                }
+                echo $url.'telephone.php?fDate='.$fDate;
+                    ?>">
             View Previous Month</a>
         <a class="btn btn-outline-primary btn-lg form-control" href="index.php">Home</a>
         <!-- Form Summary -->
@@ -108,7 +122,7 @@
     <!-- Page Level Scripts -->
     <script src="js/table2CSV.js"></script>
     <script src="js/browserCheck.js"></script>
-    <script src="js/loader_prn.js"></script>
+    <script src="js/loader_tel_details.js"></script>
 
 
 </body>

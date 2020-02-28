@@ -29,31 +29,37 @@
             //start records
             //set loop counter
             $i = 1;
-            echo ('<table border="1" style="border-spacing: 0 ;margin:auto;text-align:center;"><tr>');
+            echo ('<table id="example" class="table table-striped table-bordered" style="width:100%"><thead><tr>');
                     echo('<th>' . "Period" . '</th>');
                     echo('<th>' . " Pages " . '</th>');
                     echo('<th>' . " Amount " . '</th>');
                     echo('<th>' . "Colour" . '</th>');
                     echo('<th>' . " Job Type " . '</th>');
                     echo('<th>' . "Full Name" . '</th>');
-            echo('</tr>');
+            echo('</tr></thead><tbody>');
             while (odbc_fetch_row($result)) // while there are rows
             {  
                 // Get row data
                         echo('<tr>');
-                        echo('<td style="padding-left: 4px;padding-right: 4px;padding-top:0px;">' . odbc_result($result, 'Period') . '</td>');
-                        echo('<td style="padding-left: 6px;padding-right: 6px;padding-top:0px;;text-align: center;">' . odbc_result($result, 'Pages') . '</td>');
+                        echo('<td>' . odbc_result($result, 'Period') . '</td>');
+                        echo('<td>' . odbc_result($result, 'Pages') . '</td>');
                         $am = odbc_result($result, 'Amount');
                         $am =  number_format($am, 2,".", " ");    
-                        echo('<td style="padding-left: 6px;padding-right: 6px;padding-top:0px;;text-align: right;">R ' . $am . '</td>');
-                        echo('<td style="padding-left: 4px;padding-right: 4px;padding-top:0px;">' . odbc_result($result, 'Colour') . '</td>');
-                        echo('<td style="padding-left: 4px;padding-right: 4px;padding-top:0px;;">' . odbc_result($result, 'JobType') . '</td>');
-                        echo('<td style="padding-left: 4px;padding-right: 4px;padding-top:0px;;">' . odbc_result($result, 'Full Name') . '</td>');
+                        echo('<td>R ' . $am . '</td>');
+                        echo('<td>' . odbc_result($result, 'Colour') . '</td>');
+                        echo('<td>' . odbc_result($result, 'JobType') . '</td>');
+                        echo('<td>' . odbc_result($result, 'Full Name') . '</td>');
                         echo('</tr>');
                 }
-                echo ('</table>');
+                echo ('</tbody>');
+                echo('</table>');
                 echo "<small>For a detailed printing report, please contact ICT</small><br>";
-            
+?>
+<form action="getCSV.php" method="post">
+    <input type="hidden" name="csv_text" id="csv_text">
+    <input type="submit" value="Get CSV File" onclick="getCSVData();">
+</form>
+<?php
             //close container
             $data = $data. ']}';
             
