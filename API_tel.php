@@ -42,16 +42,11 @@
                         $aLinkNumber = substr($fromNumber,-7,strlen($fromNumber));
                         echo('<td>'. $fromNumber .'</td>');
                         echo('<td>R ' . odbc_result($result, 'CallCost')  . '</td>');   
-                        echo('<td><a href="./Details/viewReport.php?fdate='.$fDate.'&Nr='.$aLinkNumber.'" target="_Blank"> <img src="./img/DetailedBill.png" width="20px" alt="Detailed Bill"></a></td>');                    
+                        echo('<td><a href="telephone_details.php?fdate='.$fDate.'&Nr='.$aLinkNumber.'">Detailed Bill</a></td>');                    
                         echo('</tr>');
                 }
                 echo ('</tbody>');
-                echo ('<tfoot><tr>');
-                    echo('<th>' . "Employee Name" . '</th>');
-                    echo('<th>' . "Tel Number" . '</th>');
-                    echo('<th>' . "Call Cost" . '</th>');
-                    echo('<th>' . "Detailed Account" . '</th>');
-                echo('</tr></tfoot></table>');
+                echo ('</table>');
                 echo "<small>For a detailed printing report, please contact ICT</small><br>";
 ?>
 <form action="getCSV.php" method="post">

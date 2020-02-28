@@ -31,13 +31,13 @@
             //set loop counter
             $i = 1;
             echo '<h2>'.$fdate. '</h2>';
-            echo ('<table border="1" width="100%" style="border-spacing: 0 ;margin:auto;text-align:center;"><tr>');
+            echo ('<table id="example" class="table table-striped table-bordered" style="width:100%"><thead><tr>');
                     echo('<th>' . "DateTime" . '</th>');
                     echo('<th>' . "From" . '</th>');
                     echo('<th>' . "To" . '</th>');
                     echo('<th>' . 'Duration<span style="font-size:10px;"> (h.m:sec)</span>' . '</th>');
                     echo('<th>' . "Cost" . '</th>');
-            echo('</tr>');
+            echo('</tr></thead><tbody>');
             
             while (odbc_fetch_row($result)) // while there are rows
             {  
@@ -65,14 +65,22 @@
 
             while (odbc_fetch_row($result2)){
                         echo('<tr>');
-                        echo('<td></td>' );
+                        echo('<td>&nbsp</td>' );
+                        echo('<td>&nbsp</td>' );
+                        echo('<td>&nbsp</td>' );
                         echo('<td><b>Total Time: ' . odbc_result($result2, 'Time')  . 'min</b></td>');     
                         echo('<td><b>Total Cost: R' . odbc_result($result2, 'Cost')  . '</b></td>');                       
                         echo('</tr>');
                 }
-                echo ('</table>');
+                echo ('</tbody>');
+                echo('</table>');
                 echo "<br>";
-            
+?>
+<form action="getCSV.php" method="post">
+    <input type="hidden" name="csv_text" id="csv_text">
+    <input type="submit" value="Get CSV File" onclick="getCSVData();">
+</form>
+<?php
             //close container
             $data = $data. ']}';
             

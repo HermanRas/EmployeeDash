@@ -26,7 +26,7 @@ function getCSVData() {
 
 let search = window.location.search;
 
-fetch(tel_url + search)
+fetch(tel_detail_url + search)
 	.then(response => response.text())
 	.then((response) => {
 		//console.log(response)

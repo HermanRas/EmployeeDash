@@ -20,5 +20,6 @@ $user = $_GET['manager'];
 <script>
 let emp_url = 'https://phq-7hxllh2.petragroup.local/web_dev/Projects/EmployeeDash/api_emp.php';
 let tel_url = 'https://phq-7hxllh2.petragroup.local/web_dev/Projects/EmployeeDash/api_tel.php';
+let tel_detail_url = 'https://phq-7hxllh2.petragroup.local/web_dev/Projects/EmployeeDash/api_tel_details.php';
 let prn_url = 'https://phq-7hxllh2.petragroup.local/web_dev/Projects/EmployeeDash/api_prn.php';
 </script>
