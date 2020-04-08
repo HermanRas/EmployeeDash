@@ -4,6 +4,6 @@ var msieOld = ua.indexOf("MSIE");
 
 if ((msie > 0) || (msieOld > 0)) // If Internet Explorer, return version number
 {
-    let response = '<h1>Please use a modern browser</h1><br><img alt="Please update your browser" width="650px;" src="https://dat-ser-web-01.petragroup.local/EmployeeStatus/img/ModernBrowser.png" border="0">'
+    let response = '<h1>Please use a modern browser</h1><br><img alt="Please update your browser" width="650px;" src="img/ModernBrowser.png" border="0">'
     document.getElementById("Loader").innerHTML = response;
 }
