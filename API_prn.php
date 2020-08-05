@@ -1,6 +1,5 @@
 <?php
         include_once('config.php');
-        $user = str_replace("PETRAGROUP\\","",$_SERVER['AUTH_USER']);
 
         $date = date_create()->modify('-30 days');
         $fDate = date_format($date, 'Y/m');
