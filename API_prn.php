@@ -29,17 +29,18 @@
             //set loop counter
             $i = 1;
             echo ('<table id="example" class="table table-striped table-bordered" style="width:100%"><thead><tr>');
+                    echo('<th>' . "Full Name" . '</th>');
                     echo('<th>' . "Period" . '</th>');
                     echo('<th>' . " Pages " . '</th>');
                     echo('<th>' . " Amount " . '</th>');
                     echo('<th>' . "Colour" . '</th>');
                     echo('<th>' . " Job Type " . '</th>');
-                    echo('<th>' . "Full Name" . '</th>');
             echo('</tr></thead><tbody>');
             while (odbc_fetch_row($result)) // while there are rows
             {  
                 // Get row data
                         echo('<tr>');
+                        echo('<td>' . odbc_result($result, 'Full Name') . '</td>');
                         echo('<td>' . odbc_result($result, 'Period') . '</td>');
                         echo('<td>' . odbc_result($result, 'Pages') . '</td>');
                         $am = odbc_result($result, 'Amount');
@@ -47,7 +48,6 @@
                         echo('<td>R ' . $am . '</td>');
                         echo('<td>' . odbc_result($result, 'Colour') . '</td>');
                         echo('<td>' . odbc_result($result, 'JobType') . '</td>');
-                        echo('<td>' . odbc_result($result, 'Full Name') . '</td>');
                         echo('</tr>');
                 }
                 echo ('</tbody>');
