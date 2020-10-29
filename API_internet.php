@@ -8,26 +8,12 @@
                 $fDate = $_GET['fDate'];
         }
 
-        $CNs = [];
-        $companyNumbers = "''";
-        if (isset($_GET['CNs'])){
-                $CNs = $_GET['CNs'];
-                $CNs = explode(',',$CNs);
-                foreach ($CNs as $CN) {
-                        $companyNumbers = $companyNumbers.",'$CN'";
-                }
-        }
-
         //connect to a DSN "myDSN" 
         $connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=EAI_PeopleUpdate"; 
         $db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die ("could not connect<br />");
             //run sql query
-            $stmt = "SELECT [EAI_PeopleUpdate].[dbo].[vPetraTelephoneUsage].*
-                        FROM [EAI_PeopleUpdate].[dbo].[vPetraTelephoneUsage]
-                        WHERE (ReportToLogonId = '$user' 
-                                OR LogonId = '$user'
-                                OR CompanyNumber in ($companyNumbers)
-                              ) and [YearMonth] = '$fDate' ";
+            $stmt = "SELECT * from [vBandwidthReportToVIPDetail]
+                        WHERE (ReportToLogonId = '$user' OR LogonId = '$user') and [YearMonth] = '$fDate' ";
             $result = odbc_exec($db, $stmt);
             if ($result == FALSE) die ("could not execute statement $stmt<br />");
             
@@ -41,9 +27,10 @@
             echo '<h2>'.$fDate. '</h2>';
             echo ('<table id="example" class="table table-striped table-bordered" style="width:100%"><thead><tr>');
                     echo('<th>' . "Employee Name" . '</th>');
-                    echo('<th>' . "Tel Number" . '</th>');
-                    echo('<th>' . "Call Cost" . '</th>');
-                    echo('<th>' . "Detailed Account" . '</th>');
+                    echo('<th>' . "Megs Used" . '</th>');
+                    echo('<th>' . "Sessions" . '</th>');
+                    echo('<th>' . "Downloader" . '</th>');
+                    echo('<th>' . "Bandwidth Usage" . '</th>');
             echo('</tr></thead><tbody>');
             
             while (odbc_fetch_row($result)) // while there are rows
@@ -51,11 +38,10 @@
                 // Get row data
                         echo('<tr>');
                         echo('<td>' . odbc_result($result, 'Display Name') . '</td>');
-                        $fromNumber = odbc_result($result, 'FromTelNr') ;
-                        $aLinkNumber = substr($fromNumber,-7,strlen($fromNumber));
-                        echo('<td>'. $fromNumber .'</td>');
-                        echo('<td>R ' . odbc_result($result, 'CallCost')  . '</td>');   
-                        echo('<td><a href="telephone_details.php?fdate='.$fDate.'&Nr='.$aLinkNumber.'">Detailed Bill</a></td>');                    
+                        echo('<td class="text-right">'.  number_format(odbc_result($result, 'MB')) .' MB </td>');
+                        echo('<td class="text-right">' . number_format(odbc_result($result, 'Sessions')) . '</td>');   
+                        echo('<td>' . odbc_result($result, 'Downloader') . '</td>');
+                        echo('<td>' . odbc_result($result, 'Usage') . '</td>');
                         echo('</tr>');
                 }
                 echo ('</tbody>');
