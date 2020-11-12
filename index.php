@@ -26,7 +26,7 @@
 
         <!-- NAV START -->
         <nav class="navbar navbar-dark bg-dark rounded">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand text-wrap" href="index.php">
                 <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded"
                     alt="">
                 Employee Status Summary
@@ -89,18 +89,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-md-4 pt-4">
                 <a class="btn btn-outline-primary btn-lg form-control" href="printing.php">Printing Bills</a>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-4 pt-4">
                 <a class="btn btn-outline-primary btn-lg form-control" href="telephone.php">Telephone Bills</a>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-4 pt-4">
                 <a class="btn btn-outline-primary btn-lg form-control" href="mobileData.php">Company 3G Bills</a>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-md-4 pt-4">
                 <a class="btn btn-outline-primary btn-lg form-control" href="internetUsage.php">Office Internet
                     Usage</a>
+            </div>
+            <div class="col-12 col-md-4 pt-4">
+                <a class="btn btn-outline-primary btn-lg form-control" href="vpn2.php">VPN v2</a>
+            </div>
+            <div class="col-12 col-md-4 pt-4">
+                <button class="btn btn-outline-primary btn-lg form-control disabled" href="#">VPN
+                    v3 <small>coming soon</small></button>
             </div>
         </div>
         <!-- Form Summary -->
