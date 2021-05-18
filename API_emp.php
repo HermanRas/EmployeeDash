@@ -40,7 +40,7 @@
             echo('<th>' . "Company Number" . '</th>');
             echo('<th>' . "Medical Expires" . '</th>');
             echo('<th>' . "Induction Expires" . '</th>');
-            echo('<th>' . "Last Point Badged" . '</th>');
+            echo('<th>' . "Last Point Badged".'<span style="color:limegreen;font-weight 6px;"> (avg:15min)</span>' . '</th>');
             echo('<th>' . "Upcoming Planned Leave" . '</th>');
             echo('</tr></thead><tbody>');
             while (odbc_fetch_row($result)) // while there are rows
@@ -54,7 +54,7 @@
                         $medical = 'CONTACT HR';
                 }else{
                         //calc med age
-                        $date = DateTime::createFromFormat('Y/m/d',$medical);
+                        $date = DateTime::createFromFormat('Y-m-d',$medical);
                         $now = new DateTime();
                         $date = strtotime($date->format('Y/m/d'));
                         $now = strtotime($now->format('Y/m/d'));
@@ -84,7 +84,7 @@
                         $induction = 'CONTACT HR';
                 }else{
                         //calc induction age
-                        $date = DateTime::createFromFormat('Y/m/d',$induction);
+                        $date = DateTime::createFromFormat('Y-m-d',$induction);
                         $now = new DateTime();
                         $date = strtotime($date->format('Y/m/d'));
                         $now = strtotime($now->format('Y/m/d'));

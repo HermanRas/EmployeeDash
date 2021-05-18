@@ -18,6 +18,7 @@
     <link href="css/app.css" rel="stylesheet">
     <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- end of bootstrap -->
+
 </head>
 
 <body class="bg-primary">
@@ -26,10 +27,10 @@
 
         <!-- NAV START -->
         <nav class="navbar navbar-dark bg-dark rounded">
-            <a class="navbar-brand text-wrap" href="index.php">
+            <a class="navbar-brand" href="index.php">
                 <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded"
                     alt="">
-                Employee Status Summary
+                Employee VPN2 Summary
             </a>
         </nav>
         <!-- NAV END -->
@@ -65,7 +66,7 @@
         <!-- Form Summary -->
         <div class="card my-3">
             <div class="card-header bg-dark text-white">
-                Your status and Employees reporting to you on VIP:
+                Your Team's VPN3 Report:
             </div>
             <div class="card-body bg-light">
                 <!-- Filters -->
@@ -88,27 +89,28 @@
                 <!-- Table End -->
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="printing.php">Printing Bills</a>
-            </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="telephone.php">Telephone Bills</a>
-            </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="mobileData.php">Company 3G Bills</a>
-            </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="internetUsage.php">Office Internet
-                    Usage</a>
-            </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="vpn2.php">VPN v2</a>
-            </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="vpn3.php">VPN v3</a>
-            </div>
-        </div>
+        <a class="btn btn-outline-primary btn-lg form-control" href="<?php
+                if(isset($_GET['fDate'])){
+                $sdate = $_GET['fDate']; 
+                $sdate= explode("-",$sdate);
+                $time = strtotime($sdate[0].'/'.($sdate[1]-1).'/01 00:00:00');
+                $fDate = date('Y-m',$time);
+                
+                $Nr = '';
+                if(isset($_GET['Nr'])){
+                    $Nr = '&Nr='.$_GET['Nr'];      
+                }
+
+                } else{
+
+                
+                $date = date_create()->modify('-60 days');
+                $fDate = date_format($date, 'Y-m');
+                }
+                echo $url.'VPN2.php?fDate='.$fDate;
+                    ?>">
+            View Previous Month</a>
+        <a class="btn btn-outline-primary btn-lg form-control" href="index.php">Home</a>
         <!-- Form Summary -->
         <br><br>
         <!-- Main Content Start-->
@@ -126,7 +128,9 @@
     <!-- Page Level Scripts -->
     <script src="js/table2CSV.js"></script>
     <script src="js/browserCheck.js"></script>
-    <script src="js/loader_emp.js"></script>
+    <script src="js/loader_VPN3.js"></script>
+
+
 </body>
 
 </html>
