@@ -118,7 +118,7 @@
                         echo('<td style="color: '. $medicalColor .' ;">' . $medical . '</td>');
                         echo('<td style="color: '. $inductionColor .'">' . $induction . '</td>');
                         echo('<td style="color: '. $badgeColor .'">' . odbc_result($result, 'Last Point Badged') . '</td>');
-                        echo('<td>' . odbc_result($result, 'Upcoming Planned Leave') . ' </td>');                                              
+                        echo('<td>' . '<a style="color:blue;text-decoration: underline;" href="leave.php?CN='.odbc_result($result, 'Company Number').'">Balance</a><br>'. odbc_result($result, 'Upcoming Planned Leave') . ' </td>');                                              
                         echo('</tr>');
                 }
                 echo ('</tbody>');
