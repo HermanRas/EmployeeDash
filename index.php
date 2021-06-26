@@ -105,9 +105,7 @@
             <div class="col-12 col-md-4 pt-4">
                 <a class="btn btn-outline-primary btn-lg form-control" href="vpn2.php">VPN v2</a>
             </div>
-            <div class="col-12 col-md-4 pt-4">
-                <a class="btn btn-outline-primary btn-lg form-control" href="vpn3.php">VPN v3</a>
-            </div>
+
         </div>
         <!-- Form Summary -->
         <br><br>
@@ -127,6 +125,11 @@
     <script src="js/table2CSV.js"></script>
     <script src="js/browserCheck.js"></script>
     <script src="js/loader_emp.js"></script>
+    <script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    </script>
 </body>
 
 </html>

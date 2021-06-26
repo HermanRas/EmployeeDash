@@ -54,7 +54,7 @@
                         $fromNumber = odbc_result($result, 'FromTelNr') ;
                         $aLinkNumber = substr($fromNumber,-7,strlen($fromNumber));
                         echo('<td>'. $fromNumber .'</td>');
-                        echo('<td>R ' . odbc_result($result, 'CallCost')  . '</td>');   
+                        echo('<td>R ' . sprintf("%01.2f",odbc_result($result, 'CallCost'))  . '</td>');    
                         echo('<td><a href="telephone_details.php?fdate='.$fDate.'&Nr='.$aLinkNumber.'">Detailed Bill</a></td>');                    
                         echo('</tr>');
                 }
