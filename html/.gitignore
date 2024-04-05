@@ -1,0 +1,9 @@
+#exclude Dependincies folder
+vendor/
+#exclude Test folder
+test/
+config.php
+
+## IDE support
+.vscode/
+composerPKGInstallCommands.md
