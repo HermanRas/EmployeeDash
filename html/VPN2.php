@@ -113,7 +113,7 @@
 
     <!-- Start of Bootstrap JS -->
     <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrapbundle.min.js"></script>
     <script src="js/dataTables.js"></script>
     <script src="js/dataTables.bootstrap5.js"></script>
     <!-- end of Bootstrap JS -->
