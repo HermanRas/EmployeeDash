@@ -27,27 +27,16 @@ $db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate")
 //             or LogonId = '$user'
 //             or companynumber = '$empcode'
 //             order by DisplayName asc";
-$stmt = "SELECT
-                        vPetraEmployeeStatus_web.DisplayName As 'Employee Name',
-                        vPetraEmployeeStatus_web.CompanyNumber As 'Company Number',
-                        vPetraEmployeeStatus_web.Medial_FollowUpDate As 'Medical Expires',
-                        vPetraEmployeeStatus_web.Induction_Followupdate As 'Induction Expires',
-                        vPetraEmployeeStatus_web.Access_LastDatePlaceBadged As 'Last Point Badged',
-                        vPetraEmployeeStatus_web.UpcomingPlannedLeave As 'Upcoming Planned Leave',
-                        vPetraEmployeeStatus_web.Inside,
-                        IsNull(tXtimeExceptions.Exceptions, 0) As 'XTimeExceptions',
-                        tXtimeExceptions.Operation As 'XTimeOperation',
-                        vPetraEmployeeStatus_web.LeaveApproved,
-                        vPetraEmployeeStatus_web.Operation As 'LeaveOperation',
-                        vPetraEmployeeStatus_web.LastOffClockDate As LastOffClockDate,
-                        vPetraEmployeeStatus_web.[HH:MM] As [HH:MM]
-                        From
-                        vPetraEmployeeStatus_web Left Join
-                        tXtimeExceptions On tXtimeExceptions.EmployeeCode =
-                            vPetraEmployeeStatus_web.CompanyNumber
+$stmt = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo.vPetraEmployeeStatus_web.CompanyNumber AS 'Company Number', dbo.vPetraEmployeeStatus_web.Medial_FollowUpDate AS 'Medical Expires', 
+                        dbo.vPetraEmployeeStatus_web.Induction_Followupdate AS 'Induction Expires', dbo.vPetraEmployeeStatus_web.Access_LastDatePlaceBadged AS 'Last Point Badged', 
+                        dbo.vPetraEmployeeStatus_web.UpcomingPlannedLeave AS 'Upcoming Planned Leave', dbo.vPetraEmployeeStatus_web.Inside, dbo.vPetraEmployeeStatus_web.XTimeExceptions, dbo.vPetraEmployeeStatus_web.XtimeOperation, 
+                        dbo.vPetraEmployeeStatus_web.LeaveApproved, dbo.vPetraEmployeeStatus_web.Operation AS 'LeaveOperation', dbo.vPetraEmployeeStatus_web.LastOffClockDate, dbo.vPetraEmployeeStatus_web.[HH:MM], 
+                        dbo.vPetraEmployeeStatus_web.SFTName AS XTimeProfile, dbo.vPetraEmployeeStatus_web.Shifts AS TimeProfile
+                        FROM     dbo.vPetraEmployeeStatus_web LEFT OUTER JOIN
+                        dbo.tVIPData ON dbo.tVIPData.CompanyNumber = dbo.vPetraEmployeeStatus_web.CompanyNumber
                         where ReportToManager = '$user'
                         or LogonId = '$user'
-                        or companynumber = '$empcode'
+                        or vPetraEmployeeStatus_web.companynumber = '$empcode'
                         order by DisplayName asc";
 $result = odbc_exec($db, $stmt);
 if ($result == FALSE) die("could not execute statement $stmt<br />");
@@ -175,6 +164,10 @@ while (odbc_fetch_row($result)) // while there are rows
                                         data-placement="top" title="' . $leaveText . '" class="btn btn-outline-warning btn-sm">Action</a>';
     }
 
+    $shiftData = '';
+    if (odbc_result($result, 'XTimeProfile') !== null) {
+        $shiftData = '<b>Time Profile: </b>' .  odbc_result($result, 'XTimeProfile') . '<br>';
+    }
 
 
     if (strlen($leaveText) > 1) {
@@ -189,7 +182,7 @@ while (odbc_fetch_row($result)) // while there are rows
     echo ('<td class="text-center" style="color: ' . $medicalColor . ' ;">' . $medical . '</td>');
     echo ('<td class="text-center" style="color: ' . $inductionColor . '">' . $induction . '</td>');
     echo ('<td class="text-center" style="color: ' . $badgeColor . '">' . $badgeText . '</td>');
-    echo ('<td class="text-center">' . odbc_result($result, 'LastOffClockDate') . '<br>' . odbc_result($result, 'HH:MM') . '</td>');
+    echo ('<td class="text-center"><small>' . $shiftData . '<b>Shift Profile: </b>' .  odbc_result($result, 'TimeProfile') . '<br><b>Prev Shift:</b> ' . odbc_result($result, 'LastOffClockDate') . ' ' . odbc_result($result, 'HH:MM') . '</small></td>');
     echo ('<td class="text-center">' . $leaveText . '<a class="btn btn-outline-primary btn-sm" href="leave.php?CN=' . odbc_result($result, 'Company Number') . '">Balance</a>' .
         '</td>');
     echo ('<td class="text-center">' . odbc_result($result, 'XTimeExceptions') . "$XtimeURL" . '</td>');

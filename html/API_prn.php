@@ -10,8 +10,8 @@
         }
 
         //connect to a DSN "myDSN" 
-        $connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=eqcas"; 
-        $db = odbc_connect($connection_string, "eqcas", "eqcas") or die ("could not connect<br />");
+        $connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-05.petragroup.local;DATABASE=eqcas"; 
+        $db = odbc_connect($connection_string, "SQL_DAT", "DATServerConnect") or die ("could not connect<br />");
             //run sql query
             $stmt = "select CalendarPeriod as 'Period', PageCount as 'Pages', CONVERT(DECIMAL(10,2),Amount) as Amount, Type as 'Colour', trxtype as 'JobType', DisplayName as 'Full Name', EmployeeEmailAddress  from [eqcas].[dbo].[vALL]
                         where (LogonID = '$user'
