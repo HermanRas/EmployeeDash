@@ -13,7 +13,7 @@ $sql = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo.
                         dbo.vPetraEmployeeStatus_web.Induction_Followupdate AS 'Induction Expires', dbo.vPetraEmployeeStatus_web.Access_LastDatePlaceBadged AS 'Last Point Badged', 
                         dbo.vPetraEmployeeStatus_web.UpcomingPlannedLeave AS 'Upcoming Planned Leave', dbo.vPetraEmployeeStatus_web.Inside, dbo.vPetraEmployeeStatus_web.XTimeExceptions, dbo.vPetraEmployeeStatus_web.XtimeOperation, 
                         dbo.vPetraEmployeeStatus_web.LeaveApproved, dbo.vPetraEmployeeStatus_web.Operation AS 'LeaveOperation', dbo.vPetraEmployeeStatus_web.LastOffClockDate, dbo.vPetraEmployeeStatus_web.[HH:MM], 
-                        dbo.vPetraEmployeeStatus_web.SFTName AS XTimeProfile, dbo.vPetraEmployeeStatus_web.Shifts AS TimeProfile
+                        dbo.vPetraEmployeeStatus_web.SFTName AS XTimeProfile, dbo.vPetraEmployeeStatus_web.Shifts AS TimeProfile,vPetraEmployeeStatus_web.ToBeOnShift
                         FROM     dbo.vPetraEmployeeStatus_web LEFT OUTER JOIN
                         dbo.tVIPData ON dbo.tVIPData.CompanyNumber = dbo.vPetraEmployeeStatus_web.CompanyNumber
                         where ReportToManager = '$user'
@@ -102,10 +102,10 @@ foreach ($result[0] as $rec) {
     }
 
     //get badge color
-    $badgeColor = 'black';
+    $badgeColor = 'LightCoral';
     $badge = $rec['Inside'];
     if ($badge === "1") {
-        $badgeColor = 'green';
+        $badgeColor = 'LightGreen';
     }
 
     if ($badge === "1") {
@@ -161,12 +161,18 @@ foreach ($result[0] as $rec) {
         $leaveText = '';
     }
 
+    // 
+    $badge = '';
+    if ($rec['ToBeOnShift'] !==  null) {
+        $badge = '<span class="badge bg-success">Scheduled for ' . $rec['ToBeOnShift'] . '.</span><br>';
+    }
+
     // Get row data
     echo ('<tr>');
     echo ('<td>' . $EmpName . '</td>');
     echo ('<td class="text-center" style="color: ' . $medicalColor . ' ;">' . $medical . '</td>');
     echo ('<td class="text-center" style="color: ' . $inductionColor . '">' . $induction . '</td>');
-    echo ('<td class="text-center" style="color: ' . $badgeColor . '">' . $badgeText . '</td>');
+    echo ('<td class="text-center" style="background-color: ' . $badgeColor . '">' . $badge . $badgeText . '</td>');
     echo ('<td class="text-center"><small>' . $shiftData . '<b>Shift Profile: </b>' .  $rec['TimeProfile'] . '<br><b>Prev Shift:</b> ' . $rec['LastOffClockDate'] . ' ' . $rec['HH:MM'] . '</small></td>');
     echo ('<td class="text-center">' . $leaveText . '<a class="btn btn-outline-primary btn-sm" href="leave.php?CN=' . $rec['Company Number'] . '">Balance</a>' .
         '</td>');
