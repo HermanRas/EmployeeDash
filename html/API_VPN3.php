@@ -9,10 +9,9 @@ if (isset($_GET['fDate'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=VPN2";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
+include_once('config/db_query.php');
 //run sql query
-$stmt = "   SELECT
+$sql = "   SELECT
                 vVPN3MonthResults.Period,
                 vVPN3MonthResults.Username,
                 vVPN3MonthResults.Total_Minutes,
@@ -25,8 +24,8 @@ $stmt = "   SELECT
                 Where
                 (vVPN3MonthResults.Username = '$user' Or
                 vVPN3MonthResults.ReportToLogonId = '$user') and Period like '$fDate%' ";
-$result = odbc_exec($db, $stmt);
-if ($result == FALSE) die("could not execute statement $stmt<br />");
+$args = [];
+$result = sqlQuery($sql, $args, 'VPN2');
 
 //open container
 $data =  '{';
@@ -43,14 +42,13 @@ echo ('<th style="text-align: right;">' . "Duration" . '</th>');
 echo ('<th style="text-align: right;">' . "Details" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'Display Name') . '</td>');
-        echo ('<td style="text-align: right;">' . odbc_result($result, 'Total_Minutes') . '</td>');
-        echo ('<td style="text-align: right;">' . odbc_result($result, 'HH:MM') . '</td>');
-        $Username = odbc_result($result, 'Username');
+        echo ('<td>' . $rec['Display Name'] . '</td>');
+        echo ('<td style="text-align: right;">' . $rec['Total_Minutes'] . '</td>');
+        echo ('<td style="text-align: right;">' . $rec['HH:MM'] . '</td>');
+        $Username = $rec['Username'];
         echo ('<td style="text-align: right;"><a href="vpn3_details.php?fDate=' . $fDate . '&Username=' . $Username . '">Detailed Bill</a></td>');
         echo ('</tr>');
 }
@@ -67,7 +65,4 @@ echo "<small>For data older then 3 months, please contact ICT</small><br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>

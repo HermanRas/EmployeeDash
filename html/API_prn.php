@@ -12,11 +12,19 @@ if (isset($_GET['fDate'])) {
 //connect to a DSN "myDSN" 
 include_once('config/db_query.php');
 //run sql query
-$sql = "SELECT CalendarPeriod as 'Period', PageCount as 'Pages', CONVERT(DECIMAL(10,2),Amount) as Amount, Type as 'Colour', trxtype as 'JobType', DisplayName as 'Full Name', EmployeeEmailAddress  from [eqcas].[dbo].[vALL]
-                        where (LogonID = '$user'
-                        OR ReportToLogonId = '$user')
-                        and CalendarPeriod = '$fDate'
-                        order by DisplayName,JobType asc";
+$sql = "SELECT 
+        CalendarPeriod as 'Period',
+        PageCount as 'Pages',
+        CONVERT(DECIMAL(10,2),Amount) as Amount,
+        Type as 'Colour',
+        trxtype as 'JobType',
+        DisplayName,
+        EmployeeEmailAddress  
+        from [eqcas].[dbo].[vALL]
+        where (LogonID = '$user'
+        OR ReportToLogonId = '$user')
+        and CalendarPeriod = '$fDate'
+        order by DisplayName,JobType asc";
 $args = [];
 $result = sqlQuery($sql, $args, 'eqcas');
 if ($result[0] == FALSE) die("could not execute statement $sql<br />");
@@ -39,7 +47,7 @@ echo ('</tr></thead><tbody>');
 foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . $rec['Full Name'] . '</td>');
+        echo ('<td>' . $rec['DisplayName'] . '</td>');
         echo ('<td>' . $rec['Period'] . '</td>');
         echo ('<td>' . $rec['Pages'] . '</td>');
         $am = $rec['Amount'];

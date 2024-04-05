@@ -14,16 +14,14 @@ if (isset($_GET['Nr'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=cdm-SER-SQL-02.petragroup.local;DATABASE=ARCTel";
-$db = odbc_connect($connection_string, "ARCTel", "ARCTel") or die("could not connect<br />");
+include_once('config/db_query.php');
 //run sql query
-$stmt = "SELECT * from [ARCTel].[dbo].[vFromNr_ALL]
+$sql = "SELECT * from [ARCTel].[dbo].[vFromNr_ALL]
                         WHERE [FromNr] Like '%$Nr' AND  datetime like '%$fdate%' 
                         order by DATETime DESC;";
-
-$result = odbc_exec($db, $stmt);
-
-if ($result == FALSE) die("could not execute statement $stmt<br />");
+$args = [];
+$result = sqlQuery($sql, $args, 'ARCTel');
+if ($result[0] == FALSE) die("could not execute statement $sql<br />");
 
 //open container
 $data =  '{';
@@ -41,16 +39,15 @@ echo ('<th>' . 'Duration<span style="font-size:10px;"> (h.m:sec)</span>' . '</th
 echo ('<th>' . "Cost" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'DateTime') . '</td>');
-        echo ('<td>' . odbc_result($result, 'FromNr') . '</td>');
-        echo ('<td>' . odbc_result($result, 'ToNr')  . '</td>');
-        echo ('<td>' . odbc_result($result, 'CallDurationTime')  . '</td>');
+        echo ('<td>' . $rec['DateTime'] . '</td>');
+        echo ('<td>' . $rec['FromNr'] . '</td>');
+        echo ('<td>' . $rec['ToNr']  . '</td>');
+        echo ('<td>' . $rec['CallDurationTime']  . '</td>');
 
-        $callCost = odbc_result($result, 'CallCost');
+        $callCost = $rec['CallCost'];
         if ($callCost[0] == ".") {
                 $callCost = '0' . $callCost;
         }
@@ -59,19 +56,22 @@ while (odbc_fetch_row($result)) // while there are rows
 }
 
 
-$stmt2 = "SELECT sum([CallCost]) as 'Cost'
+$sql = "SELECT sum([CallCost]) as 'Cost'
                         ,(SUM(DATEDIFF(second, '0:00:00', CallDurationTime))/60) as 'Time' 
                         from [ARCTel].[dbo].[vFromNr_ALL]
                       WHERE [FromNr] like '%$Nr' AND  datetime like '%$fdate%';";
-$result2 = odbc_exec($db, $stmt2);
+$args = [];
+$result2 = sqlQuery($sql, $args, 'ARCTel');
+if ($result2[0] == FALSE) die("could not execute statement $sql<br />");
 
-while (odbc_fetch_row($result2)) {
+foreach ($result2[0] as $rec) {
+
         echo ('<tr>');
         echo ('<td>&nbsp</td>');
         echo ('<td>&nbsp</td>');
         echo ('<td>&nbsp</td>');
-        echo ('<td><b>Total Time: ' . odbc_result($result2, 'Time')  . 'min</b></td>');
-        echo ('<td><b>Total Cost: R' . sprintf("%01.2f", odbc_result($result2, 'Cost'))  . '</b></td>');
+        echo ('<td><b>Total Time: ' . $rec['Time']  . 'min</b></td>');
+        echo ('<td><b>Total Cost: R' . sprintf("%01.2f", $rec['Cost'])  . '</b></td>');
         echo ('</tr>');
 }
 echo ('</tbody>');
@@ -87,7 +87,4 @@ echo "<br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>

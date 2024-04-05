@@ -15,27 +15,26 @@ if (isset($_GET['Username'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=VPN2";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
+include_once('config/db_query.php');
 //run sql query
-$stmt = "   SELECT
-  vVPN3DetailedResults.Period,
-  vVPN3DetailedResults.Username,
-  vVPN3DetailedResults.CalendarDate,
-  vVPN3DetailedResults.DateTimeIn,
-  vVPN3DetailedResults.DateTimeOut,
-  vVPN3DetailedResults.Rounded_Hours,
-  vVPN3DetailedResults.Total_Minutes,
-  vVPN3DetailedResults.[HH:MM],
-  vVPN3DetailedResults.CompanyNumber,
-  vVPN3DetailedResults.ReportToLogonId,
-  vVPN3DetailedResults.[Display Name]
+$sql = "   SELECT
+                vVPN3DetailedResults.Period,
+                vVPN3DetailedResults.Username,
+                vVPN3DetailedResults.CalendarDate,
+                vVPN3DetailedResults.DateTimeIn,
+                vVPN3DetailedResults.DateTimeOut,
+                vVPN3DetailedResults.Rounded_Hours,
+                vVPN3DetailedResults.Total_Minutes,
+                vVPN3DetailedResults.[HH:MM],
+                vVPN3DetailedResults.CompanyNumber,
+                vVPN3DetailedResults.ReportToLogonId,
+                vVPN3DetailedResults.[Display Name]
                 From
                 vVPN3DetailedResults
                 Where
                 vVPN3DetailedResults.Username Like '$Username' and Period like '$fDate%' ";
-$result = odbc_exec($db, $stmt);
-if ($result == FALSE) die("could not execute statement $stmt<br />");
+$args = [];
+$result = sqlQuery($sql, $args, 'VPN2');
 
 //open container
 $data =  '{';
@@ -53,15 +52,14 @@ echo ('<th style="text-align: right;">' . "Total Min Connected" . '</th>');
 echo ('<th style="text-align: right;">' . "Duration" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'Display Name') . '</td>');
-        echo ('<td style="text-align: right;">' . substr(odbc_result($result, 'DateTimeIn'), 0, 16) . '</td>');
-        echo ('<td style="text-align: right;">' .  substr(odbc_result($result, 'DateTimeOut'), 0, 16) . '</td>');
-        echo ('<td style="text-align: right;">' . odbc_result($result, 'Total_Minutes') . '</td>');
-        echo ('<td style="text-align: right;">' . odbc_result($result, 'HH:MM') . '</td>');
+        echo ('<td>' . $rec['Display Name'] . '</td>');
+        echo ('<td style="text-align: right;">' . substr($rec['DateTimeIn'], 0, 16) . '</td>');
+        echo ('<td style="text-align: right;">' .  substr($rec['DateTimeOut'], 0, 16) . '</td>');
+        echo ('<td style="text-align: right;">' . $rec['Total_Minutes'] . '</td>');
+        echo ('<td style="text-align: right;">' . $rec['HH:MM'] . '</td>');
         echo ('</tr>');
 }
 echo ('</tbody>');
@@ -77,7 +75,4 @@ echo "<small>For data older then 3 months, please contact ICT</small><br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>
