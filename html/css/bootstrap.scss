@@ -1,0 +1,13 @@
+// App Colors
+$gray-dark: #343a40 !default;
+$primary: #083358 !default;
+$secondary: #b3b3b3 !default;
+$success: #198754 !default;
+$info: #78ef74 !default;
+$warning: #ffc107 !default;
+$danger: #dc3545 !default;
+$light: #F2F2F0 !default;
+$dark: #072247 !default;
+
+// Default BootStrap 5
+@import "../vendor/twbs/bootstrap/scss/bootstrap.scss";
