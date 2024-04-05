@@ -1,13 +1,15 @@
 <?php
-function sqlQuery($sql, $args)
+function sqlQuery($sql, $args, $db)
 {
-    require("config/db.php");
-    try {
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($args);
-    } catch (PDOException $e) {
-        //echo $e->getMessage();
-        die('<div class="container">
+    //EAI_PeopleUpdate
+    if ($db == 'EAI_PeopleUpdate') {
+        require("config/db.php");
+        try {
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($args);
+        } catch (PDOException $e) {
+            //echo $e->getMessage();
+            die('<div class="container">
                 <br /><br /><br />
                 <div class="alert alert-danger" role="alert">
                     Job Failed to be Created!
@@ -21,17 +23,55 @@ function sqlQuery($sql, $args)
                 </div>
             </div>
             <br />');
+        }
+
+        $results = NULL;
+        $count = 0;
+
+        try {
+            $results = $stmt->fetchAll();
+            $count = $stmt->rowCount();
+        } catch (\Throwable $th) {
+            // echo $th;
+        }
+
+        return [$results, $count];
     }
 
-    $results = NULL;
-    $count = 0;
+    //eqcas
+    if ($db == 'eqcas') {
+        require("config/db.php");
+        try {
+            $stmt = $pdoPrn->prepare($sql);
+            $stmt->execute($args);
+        } catch (PDOException $e) {
+            //echo $e->getMessage();
+            die('<div class="container">
+                    <br /><br /><br />
+                    <div class="alert alert-danger" role="alert">
+                        Job Failed to be Created!
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Transaction Error Details
+                        </div>
+                        <div class="card-body">
+                        <b>SQL Statement: </b>' . $sql . '<br />' . $e . '</div>
+                    </div>
+                </div>
+                <br />');
+        }
 
-    try {
-        $results = $stmt->fetchAll();
-        $count = $stmt->rowCount();
-    } catch (\Throwable $th) {
-        // echo $th;
+        $results = NULL;
+        $count = 0;
+
+        try {
+            $results = $stmt->fetchAll();
+            $count = $stmt->rowCount();
+        } catch (\Throwable $th) {
+            // echo $th;
+        }
+
+        return [$results, $count];
     }
-
-    return [$results, $count];
 }

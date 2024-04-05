@@ -22,7 +22,7 @@ $sql = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo.
                         order by DisplayName asc";
 /* Fetch all of the remaining rows in the result set */
 $args = [];
-$result = sqlQuery($sql, $args);
+$result = sqlQuery($sql, $args, 'EAI_PeopleUpdate');
 if ($result[0] == FALSE) die("could not execute statement $sql<br />");
 
 //open container
