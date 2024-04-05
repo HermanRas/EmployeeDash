@@ -7,27 +7,9 @@ if (isset($_GET['CN'])) {
     $empcode = $_GET['CN'];
 }
 
-//connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=EAI_PeopleUpdate";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
-//run sql query
-// $stmt = "SELECT 
-//             DisplayName as 'Employee Name',
-//             CompanyNumber as 'Company Number',
-//             Medial_FollowUpDate as 'Medical Expires',
-//             Induction_FollowUpdate as 'Induction Expires',
-//             Access_LastDatePlaceBadged as 'Last Point Badged',
-//             UpcomingPlannedLeave as 'Upcoming Planned Leave',
-//             Inside,
-//             ISNULL([tXtimeExceptions].Exceptions,0)  as 'XTimeExceptions',
-//             [tXtimeExceptions].Operation as 'XTimeOperation'
-//             from [EAI_PeopleUpdate].[dbo].[vPetraEmployeeStatus_web]
-//             left join [tXtimeExceptions] on [tXtimeExceptions].[EmployeeCode] = [vPetraEmployeeStatus_web].[CompanyNumber]
-//             where ReportToManager = '$user'
-//             or LogonId = '$user'
-//             or companynumber = '$empcode'
-//             order by DisplayName asc";
-$stmt = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo.vPetraEmployeeStatus_web.CompanyNumber AS 'Company Number', dbo.vPetraEmployeeStatus_web.Medial_FollowUpDate AS 'Medical Expires', 
+//connect to a SQL Server
+include_once('config/db_query.php');
+$sql = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo.vPetraEmployeeStatus_web.CompanyNumber AS 'Company Number', dbo.vPetraEmployeeStatus_web.Medial_FollowUpDate AS 'Medical Expires', 
                         dbo.vPetraEmployeeStatus_web.Induction_Followupdate AS 'Induction Expires', dbo.vPetraEmployeeStatus_web.Access_LastDatePlaceBadged AS 'Last Point Badged', 
                         dbo.vPetraEmployeeStatus_web.UpcomingPlannedLeave AS 'Upcoming Planned Leave', dbo.vPetraEmployeeStatus_web.Inside, dbo.vPetraEmployeeStatus_web.XTimeExceptions, dbo.vPetraEmployeeStatus_web.XtimeOperation, 
                         dbo.vPetraEmployeeStatus_web.LeaveApproved, dbo.vPetraEmployeeStatus_web.Operation AS 'LeaveOperation', dbo.vPetraEmployeeStatus_web.LastOffClockDate, dbo.vPetraEmployeeStatus_web.[HH:MM], 
@@ -38,8 +20,10 @@ $stmt = "SELECT dbo.vPetraEmployeeStatus_web.DisplayName AS 'Employee Name', dbo
                         or LogonId = '$user'
                         or vPetraEmployeeStatus_web.companynumber = '$empcode'
                         order by DisplayName asc";
-$result = odbc_exec($db, $stmt);
-if ($result == FALSE) die("could not execute statement $stmt<br />");
+/* Fetch all of the remaining rows in the result set */
+$args = [];
+$result = sqlQuery($sql, $args);
+if ($result[0] == FALSE) die("could not execute statement $sql<br />");
 
 //open container
 $data =  '{';
@@ -57,10 +41,11 @@ echo ('<th>' . "Prev Shift" . '<span style="color:limegreen;font-weight 6px;"><b
 echo ('<th>' . "Leave" . '</th>');
 echo ('<th>' . "XTime<br>Exceptions" . '</th>');
 echo ('</tr></thead><tbody>');
-while (odbc_fetch_row($result)) // while there are rows
-{
+
+
+foreach ($result[0] as $rec) {
     //data color processing medical
-    $medical =  odbc_result($result, 'Medical Expires');
+    $medical =  $rec['Medical Expires'];
     $medicalColor = 'black';
     if (strlen($medical) < 1) {
         $medicalColor = 'red';
@@ -90,9 +75,9 @@ while (odbc_fetch_row($result)) // while there are rows
 
 
     //data color processing induction
-    $induction = odbc_result($result, 'Induction Expires');
+    $induction = $rec['Induction Expires'];
     $inductionColor = 'black';
-    if (strlen($induction) < 1) {
+    if (strlen($induction ?? '') < 1) {
         $inductionColor = 'red';
         $induction = 'CONTACT HR';
     } else {
@@ -118,23 +103,23 @@ while (odbc_fetch_row($result)) // while there are rows
 
     //get badge color
     $badgeColor = 'black';
-    $badge = odbc_result($result, 'Inside');
+    $badge = $rec['Inside'];
     if ($badge === "1") {
         $badgeColor = 'green';
     }
 
     if ($badge === "1") {
         $badgeText = '<a style="cursor: pointer;" data-toggle="tooltip"
-                                      data-placement="top" title="' . odbc_result($result, 'Last Point Badged') . '">' . explode(' ', odbc_result($result, 'Last Point Badged'))[0] . '<br>Entry</a>';
+                                      data-placement="top" title="' . $rec['Last Point Badged'] . '">' . explode(' ', $rec['Last Point Badged'] ?? '')[0] . '<br>Entry</a>';
     } else {
         $badgeText = '<a style="cursor: pointer;" data-toggle="tooltip"
-                                      data-placement="top" title="' . odbc_result($result, 'Last Point Badged') . '">' . explode(' ', odbc_result($result, 'Last Point Badged'))[0] . '<br>Exit</a>';
+                                      data-placement="top" title="' . $rec['Last Point Badged'] . '">' . explode(' ', $rec['Last Point Badged'] ?? '')[0] . '<br>Exit</a>';
     }
 
     $EmpName = '<a style="cursor: pointer;" data-toggle="tooltip"
-                                      data-placement="top" title="' . odbc_result($result, 'Company Number') . '">' . odbc_result($result, 'Employee Name') . '</a><br>';;
+                                      data-placement="top" title="' . $rec['Company Number'] . '">' . $rec['Employee Name'] . '</a><br>';;
 
-    $xTimeOperation = odbc_result($result, 'XTimeOperation');
+    $xTimeOperation = $rec['XtimeOperation'];
     $XtimeURL = '';
 
     //CDM
@@ -152,11 +137,11 @@ while (odbc_fetch_row($result)) // while there are rows
         $XtimeURL = '<br><a class="btn btn-outline-primary btn-sm" target="_blank" href="https://kof-ser-tms-01.petragroup.local:8446/html/index.html#!/payhistory">Action</a>';
     }
 
-    $LeaveOperation = odbc_result($result, 'LeaveOperation');
-    $leaveText = odbc_result($result, 'Upcoming Planned Leave');
-    $leaveText =    explode('-', $leaveText)[0];
+    $LeaveOperation = $rec['LeaveOperation'];
+    $leaveText = $rec['Upcoming Planned Leave'];
+    $leaveText =    explode('-', $leaveText ?? '')[0];
 
-    $LeaveApproved = odbc_result($result, 'LeaveApproved');
+    $LeaveApproved = $rec['LeaveApproved'];
     if ($LeaveApproved !== "1") {
         $LeaveApproved = '';
     } else {
@@ -165,8 +150,8 @@ while (odbc_fetch_row($result)) // while there are rows
     }
 
     $shiftData = '';
-    if (odbc_result($result, 'XTimeProfile') !== null) {
-        $shiftData = '<b>Time Profile: </b>' .  odbc_result($result, 'XTimeProfile') . '<br>';
+    if ($rec['XTimeProfile'] !== null) {
+        $shiftData = '<b>Time Profile: </b>' .  $rec['XTimeProfile'] . '<br>';
     }
 
 
@@ -182,10 +167,10 @@ while (odbc_fetch_row($result)) // while there are rows
     echo ('<td class="text-center" style="color: ' . $medicalColor . ' ;">' . $medical . '</td>');
     echo ('<td class="text-center" style="color: ' . $inductionColor . '">' . $induction . '</td>');
     echo ('<td class="text-center" style="color: ' . $badgeColor . '">' . $badgeText . '</td>');
-    echo ('<td class="text-center"><small>' . $shiftData . '<b>Shift Profile: </b>' .  odbc_result($result, 'TimeProfile') . '<br><b>Prev Shift:</b> ' . odbc_result($result, 'LastOffClockDate') . ' ' . odbc_result($result, 'HH:MM') . '</small></td>');
-    echo ('<td class="text-center">' . $leaveText . '<a class="btn btn-outline-primary btn-sm" href="leave.php?CN=' . odbc_result($result, 'Company Number') . '">Balance</a>' .
+    echo ('<td class="text-center"><small>' . $shiftData . '<b>Shift Profile: </b>' .  $rec['TimeProfile'] . '<br><b>Prev Shift:</b> ' . $rec['LastOffClockDate'] . ' ' . $rec['HH:MM'] . '</small></td>');
+    echo ('<td class="text-center">' . $leaveText . '<a class="btn btn-outline-primary btn-sm" href="leave.php?CN=' . $rec['Company Number'] . '">Balance</a>' .
         '</td>');
-    echo ('<td class="text-center">' . odbc_result($result, 'XTimeExceptions') . "$XtimeURL" . '</td>');
+    echo ('<td class="text-center">' . $rec['XTimeExceptions'] . "$XtimeURL" . '</td>');
     echo ('</tr>');
 }
 echo ('</tbody>');
@@ -210,9 +195,4 @@ echo "<br>";
 
 //close container
 $data = $data . ']}';
-
-//print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>
