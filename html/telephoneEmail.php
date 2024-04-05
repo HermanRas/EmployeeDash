@@ -6720,9 +6720,8 @@
             z-index: 1070;
             display: block;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoj
- i", " Segoe UI Emoji", " Segoe UI Symbol", " Noto Color Emoji";
- font-style: normal;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", " Segoe UI Emoji", " Segoe UI Symbol", " Noto Color Emoji";
+            font-style: normal;
             font-weight: 400;
             line-height: 1.5;
             text-align: left;
