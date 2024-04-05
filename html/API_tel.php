@@ -19,17 +19,17 @@ if (isset($_GET['CNs'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=EAI_PeopleUpdate";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
+include_once('config/db_query.php');
 //run sql query
-$stmt = "SELECT [EAI_PeopleUpdate].[dbo].[vPetraTelephoneUsage].*
+$sql = "SELECT [EAI_PeopleUpdate].[dbo].[vPetraTelephoneUsage].*
                         FROM [EAI_PeopleUpdate].[dbo].[vPetraTelephoneUsage]
                         WHERE (ReportToLogonId = '$user' 
                                 OR LogonId = '$user'
                                 OR CompanyNumber in ($companyNumbers)
                               ) and [YearMonth] = '$fDate' ";
-$result = odbc_exec($db, $stmt);
-if ($result == FALSE) die("could not execute statement $stmt<br />");
+$args = [];
+$result = sqlQuery($sql, $args, 'EAI_PeopleUpdate');
+if ($result[0] == FALSE) die("could not execute statement $sql<br />");
 
 //open container
 $data =  '{';
@@ -46,15 +46,15 @@ echo ('<th>' . "Call Cost" . '</th>');
 echo ('<th>' . "Detailed Account" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+//loop through results
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'Display Name') . '</td>');
-        $fromNumber = odbc_result($result, 'FromTelNr');
+        echo ('<td>' . $rec['Display Name'] . '</td>');
+        $fromNumber = $rec['FromTelNr'];
         $aLinkNumber = substr($fromNumber, -11, strlen($fromNumber));
         echo ('<td>' . $fromNumber . '</td>');
-        echo ('<td>R ' . sprintf("%01.2f", odbc_result($result, 'CallCost'))  . '</td>');
+        echo ('<td>R ' . sprintf("%01.2f", $rec['CallCost'])  . '</td>');
         echo ('<td><a href="telephone_details.php?fdate=' . $fDate . '&Nr=' . $aLinkNumber . '">Detailed Bill</a></td>');
         echo ('</tr>');
 }
@@ -71,7 +71,4 @@ echo "<small>For a detailed printing report, please contact ICT</small><br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>
