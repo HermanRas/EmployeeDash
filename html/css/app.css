@@ -13,6 +13,10 @@
 }
 
 
+.show-custom {
+    display: inline;
+}
+
 .hide-custom {
     display: none;
 }

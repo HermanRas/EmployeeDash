@@ -45,7 +45,7 @@
                             </div>
                             <div class="hide-custom"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2" style="max-height:150px;" />
                             </div>
-                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg" alt="Header1" style="max-height:150px;" />
+                            <div class="show-custom"> <img class="img-fluid" src="img/Header-1680x600.jpg" alt="Header1" style="max-height:150px;" />
                             </div>
                         </div>
                     </div>
