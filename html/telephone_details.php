@@ -13,10 +13,9 @@
     <!-- end of Chrome/Android App Settings  -->
 
     <!-- Bootstrap // you can use hosted CDN here-->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
-    <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="css/dataTables.bootstrap5.css" rel="stylesheet">
     <!-- end of bootstrap -->
 
 </head>
@@ -28,8 +27,7 @@
         <!-- NAV START -->
         <nav class="navbar navbar-dark bg-dark rounded">
             <a class="navbar-brand" href="index.php">
-                <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded"
-                    alt="">
+                <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded" alt="">
                 Employee Telephone Summary
             </a>
         </nav>
@@ -41,17 +39,13 @@
                 <div class="col-12 bg-white text-center">
                     <div class="bg-dark p-1 my-1 rounded inline" style="margin: auto;">
                         <div class="row justify-content-center" id="mini-gallery-row">
-                            <div class="hide-custom3"> <img class="img-fluid" src="img/Header2-880x480.jpg"
-                                    alt="Header2" style="max-height:150px;" />
+                            <div class="hide-custom3"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2" style="max-height:150px;" />
                             </div>
-                            <div class="hide-custom2"> <img class="img-fluid" src="img/Header-1680x600.jpg"
-                                    alt="Header1" style="max-height:150px;" />
+                            <div class="hide-custom2"> <img class="img-fluid" src="img/Header-1680x600.jpg" alt="Header1" style="max-height:150px;" />
                             </div>
-                            <div class="hide-custom"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2"
-                                    style="max-height:150px;" />
+                            <div class="hide-custom"> <img class="img-fluid" src="img/Header2-880x480.jpg" alt="Header2" style="max-height:150px;" />
                             </div>
-                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg"
-                                    alt="Header1" style="max-height:150px;" />
+                            <div class="d-none d-md-block"> <img class="img-fluid" src="img/Header-1680x600.jpg" alt="Header1" style="max-height:150px;" />
                             </div>
                         </div>
                     </div>
@@ -90,25 +84,24 @@
             </div>
         </div>
         <a class="btn btn-outline-primary btn-lg form-control" href="<?php
-                if(isset($_GET['fDate'])){
-                $sdate = $_GET['fDate']; 
-                $sdate= explode("-",$sdate);
-                $time = strtotime($sdate[0].'/'.($sdate[1]-1).'/01 00:00:00');
-                $fDate = date('Y-m',$time);
-                
-                $Nr = '';
-                if(isset($_GET['Nr'])){
-                    $Nr = '&Nr='.$_GET['Nr'];      
-                }
+                                                                        if (isset($_GET['fDate'])) {
+                                                                            $sdate = $_GET['fDate'];
+                                                                            $sdate = explode("-", $sdate);
+                                                                            $time = strtotime($sdate[0] . '/' . ($sdate[1] - 1) . '/01 00:00:00');
+                                                                            $fDate = date('Y-m', $time);
 
-                } else{
+                                                                            $Nr = '';
+                                                                            if (isset($_GET['Nr'])) {
+                                                                                $Nr = '&Nr=' . $_GET['Nr'];
+                                                                            }
+                                                                        } else {
 
-                
-                $date = date_create()->modify('-60 days');
-                $fDate = date_format($date, 'Y-m');
-                }
-                echo $url.'telephone.php?fDate='.$fDate;
-                    ?>">
+
+                                                                            $date = date_create()->modify('-60 days');
+                                                                            $fDate = date_format($date, 'Y-m');
+                                                                        }
+                                                                        echo $url . 'telephone.php?fDate=' . $fDate;
+                                                                        ?>">
             View Previous Month</a>
         <a class="btn btn-outline-primary btn-lg form-control" href="index.php">Home</a>
         <!-- Form Summary -->
@@ -119,11 +112,10 @@
     <!-- Page End -->
 
     <!-- Start of Bootstrap JS -->
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <script src="js/popper.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.bootstrap4.min.js"></script>
+    <script src="js/dataTables.js"></script>
+    <script src="js/dataTables.bootstrap5.js"></script>
     <!-- end of Bootstrap JS -->
     <!-- Page Level Scripts -->
     <script src="js/table2CSV.js"></script>

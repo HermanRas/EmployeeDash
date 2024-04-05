@@ -13,10 +13,9 @@
     <!-- end of Chrome/Android App Settings  -->
 
     <!-- Bootstrap // you can use hosted CDN here-->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/dataTables.bootstrap5.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
-    <link href="css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- end of bootstrap -->
 </head>
 
@@ -108,19 +107,20 @@
 
     </div>
     <!-- Page End -->
-
     <!-- Start of Bootstrap JS -->
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.bootstrap4.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/dataTables.js"></script>
+    <script src="js/dataTables.bootstrap5.js"></script>
+
     <!-- end of Bootstrap JS -->
     <!-- Page Level Scripts -->
-    <script src="js/table2CSV.js"></script>
-    <script src="js/browserCheck.js"></script>
-    <script src="js/loader_emp.js"></script>
+    <!-- <script src="js/table2CSV.js"></script>
+    <script src="js/browserCheck.js"></script> -->
+    <!-- <script src="js/loader_emp.js"></script> -->
+
     <script>
+        new DataTable('#example');
         $(function() {
             $('[data-toggle="tooltip"]').tooltip()
         })

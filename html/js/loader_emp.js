@@ -1,20 +1,19 @@
 //global vars.
 console.log('Fetching Emp Data');
-
 function fixTable() {
-	var table = $('#example').DataTable({
+	var DataTable = $('#example').DataTable({
 		"scrollX": true
 	});
 
-	$('a.toggle-vis').on('click', function (e) {
-		e.preventDefault();
+	// $('a.toggle-vis').on('click', function (e) {
+	// 	e.preventDefault();
 
-		// Get the column API object
-		var column = table.column($(this).attr('data-column'));
+	// 	// Get the column API object
+	// 	var column = table.column($(this).attr('data-column'));
 
-		// Toggle the visibility
-		column.visible(!column.visible());
-	});
+	// 	// Toggle the visibility
+	// 	column.visible(!column.visible());
+	// });
 };
 
 function getCSVData() {
