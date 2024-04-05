@@ -41,7 +41,7 @@ foreach ($result[0] as $rec) {
 }
 echo ('</tbody>');
 echo ('</table>');
-echo "<small>For a detailed printing report, please contact ICT</small><br>";
+echo "<small>For a detailed 3G reports, please contact ICT</small><br>";
 ?>
 <form action="getCSV.php" method="post">
         <input type="hidden" name="csv_text" id="csv_text">

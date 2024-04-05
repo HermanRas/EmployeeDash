@@ -9,12 +9,12 @@ if (isset($_GET['fDate'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=EAI_PeopleUpdate";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
+include_once('config/db_query.php');
 //run sql query
-$stmt = "SELECT * from [vBandwidthReportToVIPDetail]
+$sql = "SELECT * from [vBandwidthReportToVIPDetail]
                         WHERE (ReportToLogonId = '$user' OR LogonId = '$user') and [YearMonth] = '$fDate' ";
-$result = odbc_exec($db, $stmt);
+$args = [];
+$result = sqlQuery($sql, $args, 'EAI_PeopleUpdate');
 
 //open container
 $data =  '{';
@@ -32,20 +32,19 @@ echo ('<th>' . "Downloader" . '</th>');
 echo ('<th>' . "Bandwidth Usage" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'Display Name') . '</td>');
-        echo ('<td class="text-right">' .  number_format(odbc_result($result, 'MB')) . ' MB </td>');
-        echo ('<td class="text-right">' . number_format(odbc_result($result, 'Sessions')) . '</td>');
-        echo ('<td>' . odbc_result($result, 'Downloader') . '</td>');
-        echo ('<td>' . odbc_result($result, 'Usage') . '</td>');
+        echo ('<td>' . $rec['Display Name'] . '</td>');
+        echo ('<td class="text-right">' .  number_format($rec['MB']) . ' MB </td>');
+        echo ('<td class="text-right">' . number_format($rec['Sessions']) . '</td>');
+        echo ('<td>' . $rec['Downloader'] . '</td>');
+        echo ('<td>' . $rec['Usage'] . '</td>');
         echo ('</tr>');
 }
 echo ('</tbody>');
 echo ('</table>');
-echo "<small>For a detailed printing report, please contact ICT</small><br>";
+echo "<small>For a detailed Internet report, please contact ICT</small><br>";
 ?>
 <form action="getCSV.php" method="post">
         <input type="hidden" name="csv_text" id="csv_text">
@@ -56,7 +55,4 @@ echo "<small>For a detailed printing report, please contact ICT</small><br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>
