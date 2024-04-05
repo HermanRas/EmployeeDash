@@ -24,7 +24,7 @@
     <div class="pt-3 container bg-white rounded">
 
         <!-- NAV START -->
-        <nav class="navbar navbar-dark bg-dark rounded">
+        <nav class="navbar navbar-dark bg-dark rounded px-2">
             <a class="navbar-brand text-wrap" href="index.php">
                 <img src="img/single.jpg" width="30" height="30" class="d-inline-block align-top bg-white rounded" alt="">
                 Employee Status Summary
