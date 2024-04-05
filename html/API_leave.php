@@ -10,20 +10,20 @@ if (isset($_GET['CN'])) {
 }
 
 //connect to a DSN "myDSN" 
-$connection_string = "DRIVER={SQL Server};SERVER=DAT-SER-SQL-01.petragroup.local;DATABASE=PetraAPP";
-$db = odbc_connect($connection_string, "EAIEmployeeUpdate", "EAIEmployeeUpdate") or die("could not connect<br />");
-
+include_once('config/db_query.php');
 //run sql query
-$stmt = "SELECT top 1000 [PetraAPP].[dbo].[vLeaveBalances].* from [PetraAPP].[dbo].[vLeaveBalances]
+$sql = "SELECT top 1000 [PetraAPP].[dbo].[vLeaveBalances].* from [PetraAPP].[dbo].[vLeaveBalances]
                         WHERE [EmployeeCode] = '$CN'
                         ORDER BY ShortDescription ASC;";
-$result = odbc_exec($db, $stmt);
+$args = [];
+$result = sqlQuery($sql, $args, 'EAI_PeopleUpdate');
 
 //run sql query
-$stmt = "SELECT top 1 [PetraAPP].[dbo].[vLeaveBalances].* from [PetraAPP].[dbo].[vLeaveBalances]
+$sql = "SELECT top 1 [PetraAPP].[dbo].[vLeaveBalances].* from [PetraAPP].[dbo].[vLeaveBalances]
                         WHERE [EmployeeCode] = '$CN'
                         ORDER BY ShortDescription ASC;";
-$res = odbc_exec($db, $stmt);
+$args = [];
+$result2 = sqlQuery($sql, $args, 'EAI_PeopleUpdate');
 
 //open container
 $data =  '{';
@@ -32,7 +32,7 @@ $data = $data . '"OperatorAvailabilityRecord":[';
 //start records
 //set loop counter
 $i = 1;
-echo '<h2>' . odbc_result($res, 'DisplayName') . ' - ' . $fDate . '</h2>';
+echo '<h2>' . $result2[0][0]['DisplayName'] . ' - ' . $fDate . '</h2>';
 echo ('<table id="example" class="table table-striped table-bordered" style="width:100%"><thead><tr>');
 echo ('<th>' . "Leave Type" . '</th>');
 echo ('<th>' . "Entitlement" . '</th>');
@@ -42,16 +42,15 @@ echo ('<th>' . "Taken" . '</th>');
 echo ('<th>' . "Due@End" . '</th>');
 echo ('</tr></thead><tbody>');
 
-while (odbc_fetch_row($result)) // while there are rows
-{
+foreach ($result[0] as $rec) {
         // Get row data
         echo ('<tr>');
-        echo ('<td>' . odbc_result($result, 'ShortDescription') . '</td>');
-        echo ('<td style="text-align:right;">' . odbc_result($result, 'Ent') . '</td>');
-        echo ('<td style="text-align:right;">' . odbc_result($result, 'Due@Start')  . '</td>');
-        echo ('<td style="text-align:right;">' . odbc_result($result, 'AllocatedTo')  . '</td>');
-        echo ('<td style="text-align:right;">' . odbc_result($result, 'Taken')  . '</td>');
-        echo ('<td style="text-align:right;">' . odbc_result($result, 'Due@End')  . '</td>');
+        echo ('<td>' . $rec['ShortDescription'] . '</td>');
+        echo ('<td style="text-align:right;">' . $rec['Ent'] . '</td>');
+        echo ('<td style="text-align:right;">' . $rec['Due@Start']  . '</td>');
+        echo ('<td style="text-align:right;">' . $rec['AllocatedTo']  . '</td>');
+        echo ('<td style="text-align:right;">' . $rec['Taken']  . '</td>');
+        echo ('<td style="text-align:right;">' . $rec['Due@End']  . '</td>');
         echo ('</tr>');
 }
 echo ('</tbody>');
@@ -67,7 +66,4 @@ echo "<br>";
 $data = $data . ']}';
 
 //print $data;
-//close sql connection
-odbc_free_result($result);
-odbc_close($db);
 ?>
